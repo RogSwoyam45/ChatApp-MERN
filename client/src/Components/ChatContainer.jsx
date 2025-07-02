@@ -11,7 +11,7 @@ const ChatContainer = ({selectedUser , setSelectedUser}) => {
       scrollEnd.current.scrollIntoView({ behavior: 'smooth' });
     }
   
-  }, [third])
+  }, [selectedUser])
   
   return selectedUser? (
     <div className='h-full overflow-scroll relative backdrop-blur-lg'>
@@ -37,7 +37,7 @@ const ChatContainer = ({selectedUser , setSelectedUser}) => {
               msg.image ? (
                 <img src={msg.image} alt='' className='max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8' />
               ):(
-                <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white $(msg.senderId === '680f50e4f10f3cd28382ecf9' ? 'rounded-bl-none' : 'rounded-br-none')`}>
+                <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${msg.senderId === '680f50e4f10f3cd28382ecf9' ? 'rounded-bl-none' : 'rounded-br-none'}`}>
                   {msg.text}
                 </p>
               )
