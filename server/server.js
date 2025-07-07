@@ -50,7 +50,10 @@ app.use("/api/status" , (req,res) => {
 app.use("/api/auth", userRouter);
 app.use("/api/messages", messageRouter);
 
+if(process.env.NODE_ENV !== "production"){
+     server.listen(process.env.PORT || 5000, () => {
+        console.log("server is running on PORT" + (process.env.PORT || 5000))
+        });   
+}
 
-server.listen(process.env.PORT || 5000, () => {
-    console.log("server is running on PORT" + (process.env.PORT || 5000))
-});
+export default server;

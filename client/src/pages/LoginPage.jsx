@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import assets from '../assets/assets'
+import { AuthContext } from '../../Context/AuthContext'
 
 const LoginPage = () => {
 
@@ -9,6 +10,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("")
   const [bio, setBio] = useState("")
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
+
+  const {login} = useContext(AuthContext)
 
   const onSubmitHandler = (e) =>{
     e.preventDefault();
@@ -21,7 +24,9 @@ const LoginPage = () => {
       // Handle login logic
       console.log("Logging in with", { email, password });
       // Here you would typically send a request to your backend to log the user in
-  }
+    }
+
+    login(currState === "Sign up" ? 'signup' : 'login ', {fullName, email , password, bio})
     
   }
 

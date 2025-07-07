@@ -1,18 +1,38 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import assets from '../assets/assets'
+import { AuthContext } from '../../Context/AuthContext'
 
 const ProfilePage = () => {
 
   const [selectedImage, setSelectedImage] = useState(null)
   const navigate = useNavigate();
-  const [name, setName] = useState("Rahul Hua")
-  const [bio, setBio] = useState("Hi everyone, Iam here to enjoy")
+  const [name, setName] = useState(authUser.fullname)
+  const [bio, setBio] = useState(authUser.bio)
+
+  const { authUser, updateProfile } = useContext(AuthContext);
 
   const handleSubmit = async(e) => {
       e.preventDefault();
-      navigate('/');
+      if(!selectedImage){
+        await updateProfile({fullname:name, bio});
+        navigate('/');
+        return;
+      }
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedImage);
+      reader.onload = async () => {
+        const base64image = reader.result;
+        await updateProfile({
+          profilePic: base64image,
+          fullname: name,
+          bio
+        });
+        navigate('/');
+      }
   }
+
+  
 
   return (
     <div className='min-h-screen bg-cover bg-no-repeat flex items-center justify-center'> 
@@ -40,7 +60,7 @@ const ProfilePage = () => {
           <button type='submit' className='bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer'>Save</button>
 
         </form>
-        <img src={assets.logo_icon} alt="" className='max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10'/>
+        <img src={authUser?.profilePic || assets.logo_icon} alt="" className={`${selectedImage ? 'rounded-full' : ''} max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10`}/>
       </div>
     </div>
   )
